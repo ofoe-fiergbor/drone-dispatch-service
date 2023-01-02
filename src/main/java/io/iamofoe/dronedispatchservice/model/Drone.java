@@ -10,6 +10,8 @@ import org.hibernate.validator.constraints.Range;
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Size;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -37,4 +39,6 @@ public class Drone {
     private int batteryCapacity;
     @Enumerated(EnumType.STRING)
     private State state;
+    @OneToMany(mappedBy = "drone")
+    private Set<Medication> medication = new HashSet<>();
 }
