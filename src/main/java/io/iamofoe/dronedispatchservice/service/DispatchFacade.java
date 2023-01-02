@@ -98,6 +98,11 @@ public class DispatchFacade implements DispatchService {
                 }).filter(Objects::nonNull).toList();
     }
 
+    @Override
+    public BatteryLevelDto getBatteryLevelForDrone(int droneId) {
+        return droneService.getBatteryLevelForDrone(droneId);
+    }
+
     private boolean hasEnoughBatteryPower(Drone drone) {
         return drone.getBatteryCapacity() >= MIN_DRONE_BATTERY_LEVEL;
     }

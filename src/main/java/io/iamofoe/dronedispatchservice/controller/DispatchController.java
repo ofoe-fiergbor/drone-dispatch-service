@@ -1,9 +1,6 @@
 package io.iamofoe.dronedispatchservice.controller;
 
-import io.iamofoe.dronedispatchservice.dto.DroneDto;
-import io.iamofoe.dronedispatchservice.dto.DroneResponseDto;
-import io.iamofoe.dronedispatchservice.dto.MedicationDto;
-import io.iamofoe.dronedispatchservice.dto.MedicationResponseDto;
+import io.iamofoe.dronedispatchservice.dto.*;
 import io.iamofoe.dronedispatchservice.service.DispatchService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -46,6 +43,11 @@ public class DispatchController {
     @Operation(summary = "Check for available drones")
     public ResponseEntity<List<DroneResponseDto>> handleCheckForAvailableDrones() {
         return new ResponseEntity<>(dispatchService.getAvailableDrones(), OK);
+    }
+    @GetMapping("/{droneId}/battery-level")
+    @Operation(summary = "Check battery level")
+    public ResponseEntity<BatteryLevelDto> handleCheckForBatteryLevel(@PathVariable int droneId) {
+        return new ResponseEntity<>(dispatchService.getBatteryLevelForDrone(droneId), OK);
     }
     @PostMapping(value = "/{droneId}/medications", consumes = MediaType.MULTIPART_FORM_DATA_VALUE )
     @Operation(summary = "Load medication onto drone")

@@ -2,9 +2,11 @@ package io.iamofoe.dronedispatchservice.service;
 
 import io.iamofoe.dronedispatchservice.converter.DroneDtoToEntityConverter;
 import io.iamofoe.dronedispatchservice.converter.DroneToResponseDtoConverter;
+import io.iamofoe.dronedispatchservice.dto.BatteryLevelDto;
 import io.iamofoe.dronedispatchservice.dto.DroneDto;
 import io.iamofoe.dronedispatchservice.dto.DroneResponseDto;
 import io.iamofoe.dronedispatchservice.exception.InvalidInputException;
+import io.iamofoe.dronedispatchservice.exception.NotFoundException;
 import io.iamofoe.dronedispatchservice.model.Drone;
 import io.iamofoe.dronedispatchservice.repository.DroneRepository;
 import lombok.RequiredArgsConstructor;
@@ -53,5 +55,12 @@ public class DroneRepositoryService implements DroneService {
                 .filter(drone -> criteria.contains(drone.getState()))
                 .map(toResponseDtoConverter::convert)
                 .toList();
+    }
+
+    @Override
+    public BatteryLevelDto getBatteryLevelForDrone(int droneId) {
+        return getDroneById(droneId)
+                .map(drone -> BatteryLevelDto.builder().batteryPercentage(drone.getBatteryCapacity()).droneId(droneId).build())
+                .orElseThrow(() -> new NotFoundException("Drone with id: %s not found".formatted(droneId)));
     }
 }

@@ -1,5 +1,6 @@
 package io.iamofoe.dronedispatchservice.service;
 
+import io.iamofoe.dronedispatchservice.dto.BatteryLevelDto;
 import io.iamofoe.dronedispatchservice.dto.DroneDto;
 import io.iamofoe.dronedispatchservice.dto.DroneResponseDto;
 import io.iamofoe.dronedispatchservice.model.Drone;
@@ -12,5 +13,5 @@ public interface DroneService {
     Optional<Drone> getDroneBySerialNumber(String serialNumber);
     Optional<Drone> getDroneById(int id);
     List<DroneResponseDto> getAvailableDrones();
-
+    BatteryLevelDto getBatteryLevelForDrone(int droneId);
 }
