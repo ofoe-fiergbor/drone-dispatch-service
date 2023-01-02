@@ -21,6 +21,8 @@ import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Pattern;
 
+import java.util.List;
+
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 
@@ -49,6 +51,11 @@ public class DispatchController {
     ) {
         MedicationDto body = MedicationDto.builder().code(code).image(image).weight(weight).name(name).build();
         return new ResponseEntity<>(dispatchService.loadMedication(droneId, body), CREATED);
+    }
+    @GetMapping("/{droneId}/medications")
+    @Operation(summary = "Check loaded medications on a drone")
+    public ResponseEntity<List<MedicationResponseDto>> handleCheckingLoadedMedications(@PathVariable int droneId) {
+        return new ResponseEntity<>(dispatchService.getLoadedMedicationForGivenDrone(droneId), OK);
     }
 
     @GetMapping("/medications/img/{name}")

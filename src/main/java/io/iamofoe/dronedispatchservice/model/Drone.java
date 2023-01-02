@@ -40,5 +40,5 @@ public class Drone {
     @Enumerated(EnumType.STRING)
     private State state;
     @OneToMany(mappedBy = "drone")
-    private Set<Medication> medication = new HashSet<>();
+    private Set<Medication> medications = new HashSet<>();
 }
