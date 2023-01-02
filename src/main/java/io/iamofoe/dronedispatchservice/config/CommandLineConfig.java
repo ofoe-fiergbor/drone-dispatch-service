@@ -1,6 +1,6 @@
 package io.iamofoe.dronedispatchservice.config;
 
-import io.iamofoe.dronedispatchservice.dro.DroneDto;
+import io.iamofoe.dronedispatchservice.dto.DroneDto;
 import io.iamofoe.dronedispatchservice.service.DroneService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;

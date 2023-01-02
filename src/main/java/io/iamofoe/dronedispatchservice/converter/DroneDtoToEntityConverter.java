@@ -1,6 +1,6 @@
 package io.iamofoe.dronedispatchservice.converter;
 
-import io.iamofoe.dronedispatchservice.dro.DroneDto;
+import io.iamofoe.dronedispatchservice.dto.DroneDto;
 import io.iamofoe.dronedispatchservice.model.Drone;
 import io.iamofoe.dronedispatchservice.model.State;
 import org.springframework.core.convert.converter.Converter;

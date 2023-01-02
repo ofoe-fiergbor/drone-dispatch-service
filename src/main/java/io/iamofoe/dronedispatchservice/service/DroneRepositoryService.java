@@ -1,7 +1,7 @@
 package io.iamofoe.dronedispatchservice.service;
 
 import io.iamofoe.dronedispatchservice.converter.DroneDtoToEntityConverter;
-import io.iamofoe.dronedispatchservice.dro.DroneDto;
+import io.iamofoe.dronedispatchservice.dto.DroneDto;
 import io.iamofoe.dronedispatchservice.exception.InvalidInputException;
 import io.iamofoe.dronedispatchservice.model.Drone;
 import io.iamofoe.dronedispatchservice.repository.DroneRepository;

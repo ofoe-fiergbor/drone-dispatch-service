@@ -1,4 +1,4 @@
-package io.iamofoe.dronedispatchservice.dro;
+package io.iamofoe.dronedispatchservice.dto;
 
 import io.iamofoe.dronedispatchservice.model.Model;
 import lombok.Builder;
