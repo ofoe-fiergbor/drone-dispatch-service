@@ -41,6 +41,12 @@ public class DispatchController {
     ) {
         return new ResponseEntity<>(dispatchService.registerDrone(drone), CREATED);
     }
+
+    @GetMapping("/available")
+    @Operation(summary = "Check for available drones")
+    public ResponseEntity<List<DroneResponseDto>> handleCheckForAvailableDrones() {
+        return new ResponseEntity<>(dispatchService.getAvailableDrones(), OK);
+    }
     @PostMapping(value = "/{droneId}/medications", consumes = MediaType.MULTIPART_FORM_DATA_VALUE )
     @Operation(summary = "Load medication onto drone")
     public ResponseEntity<MedicationResponseDto> handleMedicationLoad(@PathVariable int droneId,

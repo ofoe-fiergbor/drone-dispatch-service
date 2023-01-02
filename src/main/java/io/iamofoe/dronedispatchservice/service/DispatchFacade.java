@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 
 import static io.iamofoe.dronedispatchservice.model.State.*;
 
@@ -80,6 +81,21 @@ public class DispatchFacade implements DispatchService {
                     LOG.debug("loadMedication: Drone with Id: {} not found", droneId);
                     throw new NotFoundException("Drone with Id: %s not found".formatted(droneId));
                 });
+    }
+
+    @Override
+    public List<DroneResponseDto> getAvailableDrones() {
+        return droneService.getAvailableDrones().stream()
+                .map(dto -> {
+                    if (dto.getState().equals(LOADED) &&
+                            medicationService.getMedicationWeightForDrone(dto.getId()) < dto.getWeightLimit()) {
+                        return dto;
+                    }
+                    if (dto.getState().equals(LOADED)) {
+                        return null;
+                    }
+                    return dto;
+                }).filter(Objects::nonNull).toList();
     }
 
     private boolean hasEnoughBatteryPower(Drone drone) {

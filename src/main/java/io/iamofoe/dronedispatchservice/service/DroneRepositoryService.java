@@ -12,8 +12,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
+
+import static io.iamofoe.dronedispatchservice.model.State.*;
 
 @Service
 @RequiredArgsConstructor
@@ -43,5 +44,14 @@ public class DroneRepositoryService implements DroneService {
     @Override
     public Optional<Drone> getDroneById(int id) {
         return repository.findById(id);
+    }
+
+    @Override
+    public List<DroneResponseDto> getAvailableDrones() {
+        var criteria = new HashSet<>(Arrays.asList(IDLE, LOADING, LOADED));
+        return repository.findAll().stream()
+                .filter(drone -> criteria.contains(drone.getState()))
+                .map(toResponseDtoConverter::convert)
+                .toList();
     }
 }
