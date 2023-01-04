@@ -31,6 +31,12 @@ import static org.springframework.http.HttpStatus.OK;
 public class DispatchController {
     private final DispatchService dispatchService;
 
+    @GetMapping
+    @Operation(summary = "Get all drones irrespective of status")
+    public ResponseEntity<List<DroneResponseDto>> handleGetAllDrones() {
+        return new ResponseEntity<>(dispatchService.getAllDrones(), OK);
+    }
+
     @PostMapping
     @Operation(summary = "Register a drone")
     public ResponseEntity<DroneResponseDto> handleDroneRegistration(
@@ -39,17 +45,25 @@ public class DispatchController {
         return new ResponseEntity<>(dispatchService.registerDrone(drone), CREATED);
     }
 
+    @PutMapping("/{droneId}")
+    @Operation(summary = "Update battery level and state for drone")
+    public ResponseEntity<DroneResponseDto> handleDroneUpdate(@PathVariable int droneId, @Valid @RequestBody DroneUpdateDto drone) {
+        return new ResponseEntity<>(dispatchService.updateDrone(droneId, drone), OK);
+    }
+
     @GetMapping("/available")
     @Operation(summary = "Check for available drones")
     public ResponseEntity<List<DroneResponseDto>> handleCheckForAvailableDrones() {
         return new ResponseEntity<>(dispatchService.getAvailableDrones(), OK);
     }
+
     @GetMapping("/{droneId}/battery-level")
     @Operation(summary = "Check battery level")
     public ResponseEntity<BatteryLevelDto> handleCheckForBatteryLevel(@PathVariable int droneId) {
         return new ResponseEntity<>(dispatchService.getBatteryLevelForDrone(droneId), OK);
     }
-    @PostMapping(value = "/{droneId}/medications", consumes = MediaType.MULTIPART_FORM_DATA_VALUE )
+
+    @PostMapping(value = "/{droneId}/medications", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "Load medication onto drone")
     public ResponseEntity<MedicationResponseDto> handleMedicationLoad(@PathVariable int droneId,
                                                                       @RequestParam @Pattern(regexp = "([A-Za-z0-9\\-_]+)") String name,
@@ -60,6 +74,7 @@ public class DispatchController {
         MedicationDto body = MedicationDto.builder().code(code).image(image).weight(weight).name(name).build();
         return new ResponseEntity<>(dispatchService.loadMedication(droneId, body), CREATED);
     }
+
     @GetMapping("/{droneId}/medications")
     @Operation(summary = "Check loaded medications on a drone")
     public ResponseEntity<List<MedicationResponseDto>> handleCheckingLoadedMedications(@PathVariable int droneId) {

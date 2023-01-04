@@ -5,6 +5,7 @@ import io.iamofoe.dronedispatchservice.converter.DroneToResponseDtoConverter;
 import io.iamofoe.dronedispatchservice.dto.BatteryLevelDto;
 import io.iamofoe.dronedispatchservice.dto.DroneDto;
 import io.iamofoe.dronedispatchservice.dto.DroneResponseDto;
+import io.iamofoe.dronedispatchservice.dto.DroneUpdateDto;
 import io.iamofoe.dronedispatchservice.exception.InvalidInputException;
 import io.iamofoe.dronedispatchservice.exception.NotFoundException;
 import io.iamofoe.dronedispatchservice.model.Drone;
@@ -21,6 +22,7 @@ import static io.iamofoe.dronedispatchservice.model.State.*;
 @Service
 @RequiredArgsConstructor
 public class DroneRepositoryService implements DroneService {
+
     private static final Logger LOG = LoggerFactory.getLogger(DroneRepositoryService.class);
     private final DroneRepository repository;
     private final DroneDtoToEntityConverter toEntityConverter;
@@ -50,7 +52,7 @@ public class DroneRepositoryService implements DroneService {
 
     @Override
     public List<DroneResponseDto> getAvailableDrones() {
-        var criteria = new HashSet<>(Arrays.asList(IDLE, LOADING, LOADED));
+        var criteria = Set.of(IDLE, LOADING, LOADED);
         return repository.findAll().stream()
                 .filter(drone -> criteria.contains(drone.getState()))
                 .map(toResponseDtoConverter::convert)
@@ -61,6 +63,31 @@ public class DroneRepositoryService implements DroneService {
     public BatteryLevelDto getBatteryLevelForDrone(int droneId) {
         return getDroneById(droneId)
                 .map(drone -> BatteryLevelDto.builder().batteryPercentage(drone.getBatteryCapacity()).droneId(droneId).build())
-                .orElseThrow(() -> new NotFoundException("Drone with id: %s not found".formatted(droneId)));
+                .orElseThrow(() -> {
+                    LOG.debug("getBatteryLevelForDrone: Drone with id: {} not found.", droneId);
+                    throw new NotFoundException("Drone with id: %s not found.".formatted(droneId));
+                });
+    }
+
+    @Override
+    public DroneResponseDto updateDrone(int droneId, DroneUpdateDto drone) {
+        return getDroneById(droneId).map(foundDrone -> {
+            if (drone.getState().equals(IDLE) && drone.getBatteryCapacity() < 25) {
+                throw new InvalidInputException("Drone battery capacity is below 20%");
+            }
+            foundDrone.setState(drone.getState());
+            foundDrone.setBatteryCapacity(drone.getBatteryCapacity());
+            Drone updatedDrone = repository.save(foundDrone);
+            LOG.info("updateDrone: Drone with id: {} updated successfully.", droneId);
+            return toResponseDtoConverter.convert(updatedDrone);
+        }).orElseThrow(() -> {
+            LOG.debug("updateDrone: Drone with id: {} not found.", droneId);
+            throw new NotFoundException("Drone with id: %s not found".formatted(droneId));
+        });
+    }
+
+    @Override
+    public List<DroneResponseDto> getAllDrones() {
+        return repository.findAll().stream().map(toResponseDtoConverter::convert).toList();
     }
 }

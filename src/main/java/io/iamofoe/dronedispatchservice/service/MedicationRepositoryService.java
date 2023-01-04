@@ -6,10 +6,8 @@ import io.iamofoe.dronedispatchservice.dto.MedicationResponseDto;
 import io.iamofoe.dronedispatchservice.exception.BadRequestException;
 import io.iamofoe.dronedispatchservice.exception.InvalidInputException;
 import io.iamofoe.dronedispatchservice.exception.NotFoundException;
-import io.iamofoe.dronedispatchservice.model.Drone;
 import io.iamofoe.dronedispatchservice.model.Medication;
 import io.iamofoe.dronedispatchservice.model.MedicationImage;
-import io.iamofoe.dronedispatchservice.model.State;
 import io.iamofoe.dronedispatchservice.repository.MedicationImageRepository;
 import io.iamofoe.dronedispatchservice.repository.MedicationRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +19,7 @@ import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
-public class MedicationRepositoryService implements MedicationService{
+public class MedicationRepositoryService implements MedicationService {
     private static final Logger LOG = LoggerFactory.getLogger(MedicationRepositoryService.class);
 
     private final MedicationRepository medicationRepository;

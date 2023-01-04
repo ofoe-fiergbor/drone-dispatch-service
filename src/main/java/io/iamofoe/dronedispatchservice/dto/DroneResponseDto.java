@@ -14,5 +14,6 @@ public class DroneResponseDto {
     String serialNumber;
     Model model;
     double weightLimit;
+    int batteryCapacity;
     State state;
 }

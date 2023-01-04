@@ -10,5 +10,8 @@ public interface DispatchService {
     ImageDto downloadImage(String name);
     List<MedicationResponseDto> getLoadedMedicationForGivenDrone(int droneId);
     List<DroneResponseDto> getAvailableDrones();
+    List<DroneResponseDto> getAllDrones();
     BatteryLevelDto getBatteryLevelForDrone(int droneId);
+    DroneResponseDto updateDrone(int droneId, DroneUpdateDto drone);
+
 }

@@ -14,6 +14,7 @@ public class DroneToResponseDtoConverter implements Converter<Drone, DroneRespon
                 .serialNumber(source.getSerialNumber())
                 .model(source.getModel())
                 .weightLimit(source.getWeightLimit())
+                .batteryCapacity(source.getBatteryCapacity())
                 .state(source.getState())
                 .build();
     }

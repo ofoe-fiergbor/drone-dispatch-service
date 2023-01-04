@@ -99,8 +99,18 @@ public class DispatchFacade implements DispatchService {
     }
 
     @Override
+    public List<DroneResponseDto> getAllDrones() {
+        return droneService.getAllDrones();
+    }
+
+    @Override
     public BatteryLevelDto getBatteryLevelForDrone(int droneId) {
         return droneService.getBatteryLevelForDrone(droneId);
+    }
+
+    @Override
+    public DroneResponseDto updateDrone(int droneId, DroneUpdateDto drone) {
+        return droneService.updateDrone(droneId, drone);
     }
 
     private boolean hasEnoughBatteryPower(Drone drone) {
